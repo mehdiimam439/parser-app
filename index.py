@@ -2,7 +2,7 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-hello_target = "user"
+hello_target = "Hello!"
 
 
 @app.route("/")
