@@ -1,26 +1,25 @@
-from requests import post
-import config
-from firebase import db
-from firebase import storage
+from uuid import uuid4
+
+import spacy
 from flask import Flask, flash, render_template
 from flask_toastr import Toastr
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
+from resume_parser import resumeparse
 from werkzeug.utils import secure_filename
-from wtforms import FileField, SubmitField, StringField, SearchField
-from wtforms.validators import InputRequired, DataRequired
-import uuid
-import spacy
+from wtforms import FileField, StringField, SubmitField
+from wtforms.validators import InputRequired
+
+from firebase import db, storage
+
 
 nlp = spacy.load("en_core_web_sm")
-from resume_parser import resumeparse
 
 data = None
 
 app = Flask(__name__)
 toastr = Toastr(app)
-app.config["SECRET_KEY"] = config.key
-app.config["UPLOAD_FOLDER"] = "static/files"
+app.config["SECRET_KEY"] = "secret_key"
 
 
 class UploadFileForm(FlaskForm):
@@ -71,7 +70,7 @@ def index():
     if form.validate_on_submit():
         file = form.file.data
         file_name = secure_filename(file.filename)
-        id = uuid.uuid4()
+        id = uuid4()
         storage.child("resumes/" + file_name).put(file)
         storage.child("resumes/" + file_name).download("resumes/", file_name)
         global data
