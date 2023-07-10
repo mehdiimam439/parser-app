@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-import spacy
+# import spacy
 from flask import Flask, flash, render_template
 from flask_toastr import Toastr
 from flask_wtf import FlaskForm
@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired
 from firebase import db, storage
 
 
-nlp = spacy.load("en_core_web_sm")
+# nlp = spacy.load("en_core_web_sm")
 
 data = None
 
